@@ -8,7 +8,7 @@ This repo holds the code of FAFuse: A Four-Axis Fusion framework of CNN and Tran
 
 ## Model Overview
 <p align="center">
-    <img src="imgs/model.pdf"/> <br />
+    <img src="model.pdf"/> <br />
 </p>
 
 
@@ -38,14 +38,14 @@ Code of other tasks will be comming soon.
 
 
 ## Reference
-###Some of the codes in this repo are borrowed from:
+Some of the codes in this repo are borrowed from:
 * [Facebook DeiT](https://github.com/facebookresearch/deit)
 * [timm repo](https://github.com/rwightman/pytorch-image-models)
 * [Transfuse](https://github.com/Rayicer/TransFuse)
 
 ## datasets
-* downloading kvasir from[Baidu Pan, pw:cczu](https://pan.baidu.com/s/1WyGNXZdqWJtYhwPzpqd2qQ)
-* downloading CVC-ClinicDB from[Baidu Pan, pw:cczu](https://pan.baidu.com/s/1RXhYeRW96UkoP3oHdTC6kw)
+* downloading kvasir from [Baidu Pan, pw:cczu](https://pan.baidu.com/s/1WyGNXZdqWJtYhwPzpqd2qQ)
+* downloading CVC-ClinicDB from [Baidu Pan, pw:cczu](https://pan.baidu.com/s/1RXhYeRW96UkoP3oHdTC6kw)
 
 
 ## Questions
