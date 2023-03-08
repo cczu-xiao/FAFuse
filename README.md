@@ -8,7 +8,7 @@ This repo holds the code of FAFuse: A Four-Axis Fusion framework of CNN and Tran
 
 ## Model Overview
 <p align="center">
-    <img src="model.pdf"/> <br />
+    <img src="model.jpg"/> <br />
 </p>
 
 
