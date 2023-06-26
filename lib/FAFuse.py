@@ -115,14 +115,94 @@ class AxialAttention(nn.Module):
         self.qkv_transform.weight.data.normal_(0, math.sqrt(1. / self.in_planes))
         nn.init.normal_(self.relative, 0., math.sqrt(1. / self.group_planes))
 
+
 class FAFusion_block(nn.Module):
-    def __init__(self):
+    def __init__(self, ch_1, ch_2,  ch_int, ch_out, drop_rate=0., scale_size=1):
         super(FAFusion_block, self).__init__()
         self.scale_size = scale_size
         self.relu = nn.ReLU(inplace=True)
         self.sigmoid = nn.Sigmoid()
 
+        # AG anxial attention for F_l
+        self.conv_down = nn.Conv2d(ch_int, ch_int, kernel_size=3, stride=1, bias=True, padding=1,groups=1 )
+        self.conv_down1 = conv1x1(ch_1 + ch_2, ch_int)
+        self.conv_up1 = nn.Conv2d(ch_int * 2, ch_int,kernel_size=1,stride=1,padding=0,bias=True)
+        self.bn1 = nn.BatchNorm2d(ch_int)
+        self.hight_block = AxialAttention(ch_int, ch_int, groups=4, kernel_size=22 * self.scale_size)
+        self.width_block = AxialAttention(ch_int, ch_int, groups=4, kernel_size=22 * self.scale_size,stride=1, width=True)
+        self.diagonal_block1 = AxialAttention(ch_int, ch_int, groups=4,kernel_size=22 * self.scale_size,stride=1)
+        self.diagonal_block2 = AxialAttention(ch_int, ch_int, groups=4, kernel_size=22 * self.scale_size+1,stride=1)
+        self.conv_up = conv1x1(ch_int, ch_int)
+        self.bn2 = nn.BatchNorm2d(ch_int)
 
+        # bi-linear modelling for both
+        self.W_g = Conv(ch_1, ch_int, 1, bn=True, relu=False)  # 1x1的卷积
+        self.W_x = Conv(ch_2, ch_int, 1, bn=True, relu=False)  # 1x1的卷积
+        self.W = Conv(ch_int, ch_int, 3, bn=True, relu=True)  # 3x3的卷积
+        self.residual = Residual(ch_int*2, ch_out)
+        self.dropout = nn.Dropout2d(drop_rate)
+        self.drop_rate = drop_rate
+        self.convpro = ConvPro(ch_1 + ch_2,ch_1 + ch_2)
+        self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+        self.LReLU = nn.LeakyReLU(0.05, True)
+
+    def forward(self, g, x):  # g是cnn分支的特征图，x是Transformer分支的特征图
+
+        W_g = self.W_g(g)
+        W_x = self.W_x(x)  
+        bp_m = self.W(W_g * W_x)  
+
+        bp = torch.cat([g,x],dim=1)
+       
+        bp = self.convpro(bp)
+
+        bp = self.conv_down1(bp)     # 整个通道信息
+        bp = self.bn1(bp)
+        bp = self.relu(bp)
+
+        bp_in = bp
+
+        # MSC
+        bp_1 = bp
+        bp = self.hight_block(bp)
+        bp = self.width_block(bp)
+        bp = bp + bp_1
+        bp = self.conv_down(bp)
+
+        bp_in2 = bp
+        
+        
+        # H&W
+        bp_1 = bp
+        bp = F.pad(bp, (0, 0, 0, 1), value=0)
+        bp = bp.reshape(*bp.size()[:-2], bp.size(-1), bp.size(-2))
+        bp = self.diagonal_block1(bp)
+        bp = bp.reshape(*bp.size()[:-2], bp.size(-1), bp.size(-2))
+        bp = F.pad(bp, (0, 0, 0, -1), value=0)
+
+        # M&C
+        bp = F.pad(bp, (0, 1, 0, 0), value=0)
+        bp = bp.reshape(*bp.size()[:-2], bp.size(-1), bp.size(-2))
+        bp = self.diagonal_block2(bp)
+        bp = bp.reshape(*bp.size()[:-2], bp.size(-1), bp.size(-2))
+        bp = F.pad(bp, (0, -1, 0, 0), value=0)
+
+        bp = bp + bp_1
+
+        bp = self.conv_down(bp)
+
+        bp = torch.cat([bp_in2,bp],dim=1)
+        bp = self.conv_up1(bp)
+        bp = self.LReLU(bp)
+
+        bp = bp + bp_in
+
+        fuse = self.residual(torch.cat([bp_m,bp], 1))
+
+        if self.drop_rate > 0:
+            return self.dropout(fuse)
+        else:
+            return fuse
 
 class FAFuse_B(nn.Module):
     def __init__(self, num_classes=1, drop_rate=0.2, normal_init=True, pretrained=False):
