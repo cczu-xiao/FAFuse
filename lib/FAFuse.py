@@ -136,9 +136,9 @@ class FAFusion_block(nn.Module):
         self.bn2 = nn.BatchNorm2d(ch_int)
 
         # bi-linear modelling for both
-        self.W_g = Conv(ch_1, ch_int, 1, bn=True, relu=False)  # 1x1的卷积
-        self.W_x = Conv(ch_2, ch_int, 1, bn=True, relu=False)  # 1x1的卷积
-        self.W = Conv(ch_int, ch_int, 3, bn=True, relu=True)  # 3x3的卷积
+        self.W_g = Conv(ch_1, ch_int, 1, bn=True, relu=False)  
+        self.W_x = Conv(ch_2, ch_int, 1, bn=True, relu=False)  
+        self.W = Conv(ch_int, ch_int, 3, bn=True, relu=True) 
         self.residual = Residual(ch_int*2, ch_out)
         self.dropout = nn.Dropout2d(drop_rate)
         self.drop_rate = drop_rate
@@ -146,7 +146,7 @@ class FAFusion_block(nn.Module):
         self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
         self.LReLU = nn.LeakyReLU(0.05, True)
 
-    def forward(self, g, x):  # g是cnn分支的特征图，x是Transformer分支的特征图
+    def forward(self, g, x): 
 
         W_g = self.W_g(g)
         W_x = self.W_x(x)  
@@ -156,7 +156,7 @@ class FAFusion_block(nn.Module):
        
         bp = self.convpro(bp)
 
-        bp = self.conv_down1(bp)     # 整个通道信息
+        bp = self.conv_down1(bp)    
         bp = self.bn1(bp)
         bp = self.relu(bp)
 
