@@ -153,7 +153,7 @@ class FAFusion_block(nn.Module):
         bp_m = self.W(W_g * W_x)  
 
         bp = torch.cat([g,x],dim=1)
-       
+        # MSC
         bp = self.convpro(bp)
 
         bp = self.conv_down1(bp)    
@@ -162,7 +162,7 @@ class FAFusion_block(nn.Module):
 
         bp_in = bp
 
-        # MSC
+        # H&W
         bp_1 = bp
         bp = self.hight_block(bp)
         bp = self.width_block(bp)
@@ -172,7 +172,7 @@ class FAFusion_block(nn.Module):
         bp_in2 = bp
         
         
-        # H&W
+        # M&C
         bp_1 = bp
         bp = F.pad(bp, (0, 0, 0, 1), value=0)
         bp = bp.reshape(*bp.size()[:-2], bp.size(-1), bp.size(-2))
@@ -180,7 +180,7 @@ class FAFusion_block(nn.Module):
         bp = bp.reshape(*bp.size()[:-2], bp.size(-1), bp.size(-2))
         bp = F.pad(bp, (0, 0, 0, -1), value=0)
 
-        # M&C
+        
         bp = F.pad(bp, (0, 1, 0, 0), value=0)
         bp = bp.reshape(*bp.size()[:-2], bp.size(-1), bp.size(-2))
         bp = self.diagonal_block2(bp)
