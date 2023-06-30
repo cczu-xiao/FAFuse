@@ -222,7 +222,6 @@ class FAFuse_B(nn.Module):
             Conv(64, 64, 3, bn=True, relu=True),
             Conv(64, num_classes, 3, bn=False, relu=False)
         )
-        self.final_x1 = Conv(256, 64, 1, bn=True, relu=True)
 
         self.final_1 = nn.Sequential(
             Conv(64, 64, 3, bn=True, relu=True),
@@ -233,7 +232,6 @@ class FAFuse_B(nn.Module):
             Conv(64, 64, 3, bn=True, relu=True),
             Conv(64, num_classes, 3, bn=False, relu=False)
         )
-        self.convv = Conv(64, num_classes, 1, bn=False, relu=False)
         self.up_c = FAFusion_block(ch_1=256, ch_2=768, ch_int=256, ch_out=256, drop_rate=drop_rate / 2, scale_size=1)
         self.up_c_1_1 = FAFusion_block(ch_1=128, ch_2=128, ch_int=128, ch_out=128, drop_rate=drop_rate / 2, scale_size=2)
         self.up_c_1_2 = Up(in_ch1=256, out_ch=128, in_ch2=128, attn=True)
@@ -263,7 +261,6 @@ class FAFuse_B(nn.Module):
         x_u = self.resnet.bn1(x_u)
         x_u = self.resnet.relu(x_u)
 
-        x_u1 = x_u
         x_u = self.resnet.maxpool(x_u)
 
         x_u_2 = self.resnet.layer1(x_u)
@@ -283,15 +280,9 @@ class FAFuse_B(nn.Module):
         x_c_2 = self.up_c_2_2(x_c_1, x_c_2_1)
 
         # decoder part
-        map_x = F.interpolate(self.final_x1(x_c), scale_factor=4, mode='bilinear')
-        map_x = F.relu(F.interpolate(torch.add(map_x, x_u_2), scale_factor=2, mode='bilinear'))
-        map_x = F.relu(F.interpolate(torch.add(map_x, x_u1), scale_factor=2, mode='bilinear'))
-        map_x = self.convv(map_x)
-
-        map_1 = F.interpolate(self.final_1(x_b_2), scale_factor=4, mode='bilinear')
-        map_2 = F.relu(F.interpolate(torch.add(x_c_2,x_u_2), scale_factor=2, mode='bilinear'))
-        map_2 = F.relu(F.interpolate(torch.add(map_2,x_u1), scale_factor=2, mode='bilinear'))
-        map_2 = self.convv(map_2)
+        map_x = F.interpolate(self.final_x(x_c), scale_factor=16, mode='bilinear', align_corners=True)
+        map_1 = F.interpolate(self.final_1(x_b_2), scale_factor=4, mode='bilinear', align_corners=True)
+        map_2 = F.interpolate(self.final_2(torch.add(x_c_2,x_u_2)), scale_factor=4, mode='bilinear', align_corners=True)
         return map_x, map_1, map_2
 
     def init_weights(self):
