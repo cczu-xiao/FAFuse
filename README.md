@@ -43,8 +43,8 @@ Some of the codes in this repo are borrowed from:
 * [Transfuse](https://github.com/Rayicer/TransFuse)
 
 ## datasets
-* downloading kvasir from [Baidu Pan, pw:cczu](https://pan.baidu.com/s/1WyGNXZdqWJtYhwPzpqd2qQ)
-* downloading CVC-ClinicDB from [Baidu Pan, pw:cczu](https://pan.baidu.com/s/1RXhYeRW96UkoP3oHdTC6kw)
+* downloading kvasir from [Baidu Pan, pw:cczu](https://pan.baidu.com/s/13PKPVD3v1do8g-NMhPYqvQ)
+* downloading CVC-ClinicDB from [Baidu Pan, pw:cczu](https://pan.baidu.com/s/1vvq1OCl0bBIR3u1ykKLWqw)
 
 ## Citation
 Please consider citing us if you find this work helpful:
