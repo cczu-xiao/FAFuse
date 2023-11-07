@@ -245,7 +245,7 @@ class FAFuse_B(nn.Module):
         # Transformer Branch
         x_b = self.transformer(imgs)
         x_b = torch.transpose(x_b, 1, 2)
-        x_b = x_b.view(x_b.shape[0], -1, 22, 22)
+        x_b = x_b.view(x_b.shape[0], -1, 24, 24)     # 384x384:[x_b.shape[0], -1, 24, 24]  352x352:[x_b.shape[0], -1, 22, 22]
         x_b = self.drop(x_b)
 
         x_b_1 = self.up1(x_b)     # input channel: 384，output channle: 128
