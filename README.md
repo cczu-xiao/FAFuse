@@ -47,6 +47,16 @@ Some of the codes in this repo are borrowed from:
 * downloading kvasir from [Baidu Pan, pw:cczu](https://pan.baidu.com/s/1WyGNXZdqWJtYhwPzpqd2qQ)
 * downloading CVC-ClinicDB from [Baidu Pan, pw:cczu](https://pan.baidu.com/s/1RXhYeRW96UkoP3oHdTC6kw)
 
+## Citation
+Please consider citing us if you find this work helpful:
+@article{xu2023fafuse,
+  title={FAFuse: A Four-Axis Fusion framework of CNN and transformer for medical image segmentation},
+  author={Xu, Shoukun and Xiao, Dehao and Yuan, Baohua and Liu, Yi and Wang, Xueyuan and Li, Ning and Shi, Lin and Chen, Jialu and Zhang, Ju-Xiao and Wang, Yanhao and others},
+  journal={Computers in Biology and Medicine},
+  pages={107567},
+  year={2023},
+  publisher={Elsevier}
+}
 
 ## Questions
 Please drop an email to yuanbaohua@cczu.edu.cn
