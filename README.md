@@ -1,5 +1,5 @@
 # FAFuse
-This repo holds the code of FAFuse: A Four-Axis Fusion framework of CNN and Transformer for Medical Image Segmentation
+This repo holds the code of FAFuse: A Four-Axis Fusion framework of CNN and Transformer for medical image segmentation
 
 ## Requirements
 * Pytorch>=1.6.0, <1.9.0 (>=1.1.0 should work but not tested)
