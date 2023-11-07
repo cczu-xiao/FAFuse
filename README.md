@@ -49,6 +49,8 @@ Some of the codes in this repo are borrowed from:
 
 ## Citation
 Please consider citing us if you find this work helpful:
+
+```bibtex
 @article{xu2023fafuse,
   title={FAFuse: A Four-Axis Fusion framework of CNN and transformer for medical image segmentation},
   author={Xu, Shoukun and Xiao, Dehao and Yuan, Baohua and Liu, Yi and Wang, Xueyuan and Li, Ning and Shi, Lin and Chen, Jialu and Zhang, Ju-Xiao and Wang, Yanhao and others},
@@ -57,6 +59,7 @@ Please consider citing us if you find this work helpful:
   year={2023},
   publisher={Elsevier}
 }
+```
 
 ## Questions
 Please drop an email to yuanbaohua@cczu.edu.cn
