@@ -40,7 +40,7 @@ class DeiT(VisionTransformer):
 @register_model
 def deit_small_patch16_224(pretrained=False, **kwargs):
     model = DeiT(
-        patch_size=16, embed_dim=768, depth=8, num_heads=8, mlp_ratio=4, qkv_bias=True,
+        patch_size=16, embed_dim=768, depth=8, num_heads=4, mlp_ratio=4, qkv_bias=True,
         norm_layer=partial(nn.LayerNorm, eps=1e-6),img_size=384,**kwargs)   # img_size=384
     model.default_cfg = _cfg()
     if pretrained:
