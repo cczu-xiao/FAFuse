@@ -16,7 +16,7 @@ This repo holds the code of FAFuse: A Four-Axis Fusion framework of CNN and Tran
 ## Experiments
 
 ### ISIC2018 Skin Lesion Segmentation Challenge
-
+GPUs of memory>=23G shall be sufficient for this experiment.
 1. Preparing necessary data:
 	+ downloading ISIC2018 training, validation and testing data from the [official site](https://challenge.isic-archive.com/data/#2018), put the unzipped data in `./data`.
 	+ run `random_division.py` to randomly divide the number of datasets
