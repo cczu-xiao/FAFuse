@@ -1,5 +1,5 @@
 # FAFuse
-This repo holds the code of FAFuse: A Four-Axis Fusion framework of CNN and Transformer for Medical Image Segmentation for Medical Image Segmentation
+This repo holds the code of FAFuse: A Four-Axis Fusion framework of CNN and Transformer for Medical Image Segmentation
 
 ## Requirements
 * Pytorch>=1.6.0, <1.9.0 (>=1.1.0 should work but not tested)
@@ -24,14 +24,16 @@ GPUs of memory>=12G shall be sufficient for this experiment.
 	+ run `process.py` to preprocess all the data, which generates `data_{train, val, test}.npy` and `mask_{train, val, test}.npy`.
 	+ alternatively, the processed data is provided in [Baidu Pan, pw:cczu](https://pan.baidu.com/s/12oH_yxcW15yHUYm2l9nWVQ) .
 
-2. Testing:
-	+ downloading our trained FAFuse-B from [Baidu Pan, pw:cczu](https://pan.baidu.com/s/1LSOAsciZLTSkMGzu_plS8g)  to `./snapshots/`.
-	+ run `test_isic.py --ckpt_path='snapshots/FAFuse-18_.pth'`.
-
-3. Training:
+2. Training:
 	+ downloading DeiT-base from [DeiT repo](https://github.com/facebookresearch/deit) to `./pretrained`.
 	+ downloading resnet-34 from [timm Pytorch](https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/resnet34-43635321.pth) to `./pretrained`.
 	+ run `train_isic.py`; you may also want to change the default saving path or other hparams as well.
+
+3. Testing:
+	+ downloading our trained FAFuse-B from [Baidu Pan, pw:cczu](https://pan.baidu.com/s/1LSOAsciZLTSkMGzu_plS8g)  to `./snapshots/`.
+	+ run `test_isic.py --ckpt_path='snapshots/FAFuse-18_.pth'`.
+
+
 
 
 
